@@ -1,37 +1,36 @@
-## Welcome to GitHub Pages
+## IoT Population Health With Quarkus
 
-You can use the [editor on GitHub](https://github.com/popluation-health/population-health.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Architecture
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Running locally
+The sections below provide the introductory commands to run the services for the Population Health PoC in a local development environment. Note that each service specifies a different port than the default since we'll be running more than one service in many scenarios.
 
-```markdown
-Syntax highlighted code block
+**Prerequisites**
+- maven 3.6.3+
+- java 11+
 
-# Header 1
-## Header 2
-### Header 3
+#### Decision Services
 
-- Bulleted
-- List
+The decision services platform can be run in a dev/local environment using the out of the box maven capability that ships with Quarkus.  Run:
 
-1. Numbered
-2. List
+`mvn clean compile quarkus:dev -Dquarkus.http.port=8081`
 
-**Bold** and _Italic_ and `Code` text
+The service exposes an endpoint at `/healthRules` that will by default execute the Health Rewards and Health Alerts rule sets.
 
-[Link](url) and ![Image](src)
+For example, to hit a rule in the Health Rewards ruleset:
+```
+curl -X POST "http://localhost:8081/healthRules" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"steps\":18000}"
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+See the [Data Format and Rules](#Data Format and Rules) section for more examples and details on the default rulesets.
 
-### Jekyll Themes
+#### Dashboard
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/popluation-health/population-health.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+#### Health Data ETL
 
-### Support or Contact
+### Deploy to AWS
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
+### Future Functionality and Next Steps
