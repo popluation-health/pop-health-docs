@@ -19,8 +19,8 @@ IoT Population Health Quarkus implementation and submission for the the Quarkus 
 The objective of the architecture is to create an efficient, serverless, and rules driven architecture
 that can be used to process health data telemetry from a wide array of devices and health data ecosystems and unify those diverse sources to allow for common processing and actions within a given population.
 
-By utilizing a rules driven approach the application gives enterprises the ability to customize data processing
-via decision tables and in the future via business process management notation.    
+A rules driven approach  gives enterprises the ability to customize data processing
+via decision tables (and in the future via business process management notation). Coupled with a serverless architecture allows for rapid deployment of new capability on Quarkus with little or no code changes..    
 
 ### Architecture
 
@@ -54,7 +54,7 @@ The sections below provide the introductory commands to run the services for the
 
 #### Decision Services
 
-The decision services platform can be run in a dev/local environment using the out of the box maven capability that ships with Quarkus.  Run:
+The decision services platform can be run in a local environment using the out of the box maven capability that ships with Quarkus.  Run:
 
 `mvn clean compile quarkus:dev -Dquarkus.http.port=8081`
 
@@ -67,6 +67,8 @@ curl -X POST "http://localhost:8081/healthRules" -H "accept: application/json" -
 
 See the [Data Format and Rules](#data-format-and-rules) section for more examples and details on the default rulesets.
 
+Decision services are also built to run in a serverless environment. See [Deploy Lambdas to AWS](#deploy-lambdas-to-aws) for details.
+
 #### Dashboard
 
 The Population Health Dashboard can be run locally using the out of the box capability provided by Quarkus:
@@ -77,7 +79,7 @@ The site is available at http://localhost:8082 using the port configuration abov
 
 #### Health Data ETL
 
-The implementation for the Health Data ETL service requires a connection to Google Fit APIs to fetch data. There are a number of steps required to authorize and connect Google APIs for execution in a local environment. If you want a simple experience to test decision services go to [Health Data Mock](#health-data-mock)
+The default implementation for the Health Data ETL service requires a connection to Google Fit APIs to fetch data. There are a number of steps required to authorize and connect Google APIs for execution in a local environment. If you want a simple experience to test decision services go to [Health Data Mock](#health-data-mock)
 
 The following steps all require a Google account and access to, or the ability to enable, a Google Cloud account.
 
@@ -111,18 +113,24 @@ Once configured as above the Health Data ETL service can be run using the provid
 
 `mvn clean compile quarkus:dev`
 
-Then visit http://localhost:8080/fitAuth. If you haven't already authenticated then you'll be redirected to Google to allow your app access to your Google Fit data. Once authenticated the app will automatically process current data based on your provided configuration.
+Then visit <http://localhost:8080/fitAuth>. If you haven't already authenticated then you'll be redirected to Google to allow your app access to your Google Fit data. Once authenticated the app will automatically process current data based on your provided configuration.
 
 The Health Data ETL service can also be run as a simulated lambda in native or jvm mode. See the [Quarkus Amazon Lambda Guide](https://quarkus.io/guides/amazon-lambda-http) for instructions on running the simulated lambda.
 
 ### Deploy Lambdas to AWS
 
-These instructions are largely adapted from the [Quarkus Amazon Lambda Guide] (https://quarkus.io/guides/amazon-lambda-http). If you have trouble with the Amazon steps check at that link starting with Build and Deploy.
+These instructions are largely adapted from the [Quarkus Amazon Lambda Guide](https://quarkus.io/guides/amazon-lambda-http). If you have trouble with the Amazon steps check at that link starting with Build and Deploy.
 
 #### Health Data Mock
 
 
 ### Data Format and Rules
+
+The business rules deployed as part of serverless decision services are all defined in Excel decision tables to allow for ease of access to business users. The baseline decision tables can be found at:
+
+  * [Rewards Rules](https://github.com/popluation-health/decision-services/tree/master/src/main/resources/org/pophealth/rewards)
+  * [Alert Rules]()
+
 
 
 ### Future Functionality and Next Steps
