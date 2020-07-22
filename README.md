@@ -104,8 +104,8 @@ The following steps all require a Google account and access to, or the ability t
 2. Set the following required properties:
   * `google.fit.client.json.path` -- to the location of the `client_secret.json` file downloaded in the Setup a Client section above. Note: this file contains sensitive infromation. **Don't check it in to git**.
   * `google.fit.api.token.store` -- an available folder location to store the refresh token for fit api calls. Note: this token store is sensitive information. **Don't check it in to git**.
+  * You'll also need to set the configuration for the location of decision services for the rest-client using this property `org.pophealth.client.HealthDataService/mp-rest/url=` That property can be set to the local URL or the URL of the lambda running in AWS.
 
-TODO - Add ref to decision services for data publishing.
 
 **Run the Health Data ETL**
 
@@ -119,18 +119,20 @@ The Health Data ETL service can also be run as a simulated lambda in native or j
 
 ### Deploy Lambdas to AWS
 
-These instructions are largely adapted from the [Quarkus Amazon Lambda Guide](https://quarkus.io/guides/amazon-lambda-http). If you have trouble with the Amazon steps check at that link starting with Build and Deploy.
+The decision services lambda can be deployed using the Quarkus guide out of the box [Quarkus Amazon Lambda Guide](https://quarkus.io/guides/amazon-lambda-http). If you have trouble with the Amazon steps check at that link starting with Build and Deploy.
 
+The endpoint for the deployed decision services is `/healthRules`
 #### Health Data Mock
 
+The Health Data Mock is a Quarkus microservice that can be configured to invoke the decision services using mock data driven from a spreadsheet. It invokes the same APIs as the Health ETL service and can be used to test rules.
+
+The mock data can be customized in `src/main/resources/mock` in the provided CSV
 
 ### Data Format and Rules
 
-The business rules deployed as part of serverless decision services are all defined in Excel decision tables to allow for ease of access to business users. The baseline decision tables can be found at:
+The business rules deployed as part of serverless decision services are all defined in Excel decision tables to allow for ease of access to business users. The baseline decision tables can be found in `src/main/resources` inside the decision-services Quarkus project.
 
-  * [Rewards Rules](https://github.com/popluation-health/decision-services/tree/master/src/main/resources/org/pophealth/rewards)
-  * [Alert Rules]()
-
+  For the PoC the normalized input data is a flat object representing data points or lists of data points from the Health IoT device(s). In the future this API and backing data model object will need be made significantly more robust to support better data inputs. See the `HealthData.java` object in the decision services for the normalized format.
 
 
 ### Future Functionality and Next Steps
@@ -138,3 +140,8 @@ The business rules deployed as part of serverless decision services are all defi
 - Refactor connectors to external services (like Google Fit) to Quarkus extensions
 - Dashboard UX
 - Authentication and security on data services
+- Enhanced data input and data structures for the decision services API
+
+### Additional Resources
+https://www.whoop.com/thelocker/respiratory-rate-tracking-coronavirus/
+https://www.golfchannel.com/news/whoop-strap-key-detecting-nick-watneys-positive-test
